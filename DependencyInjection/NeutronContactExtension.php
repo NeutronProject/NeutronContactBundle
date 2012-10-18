@@ -24,36 +24,59 @@ class NeutronContactExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        var_dump($config); die;
+        $this->loadGeneralConfigurations($config, $container);
+        $this->loadContactConfigurations($config['contact'], $container);
+        $this->loadContactFormConfigurations($config['contact_form'], $container);
         
+    }
+    
+    protected function loadGeneralConfigurations(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('neutron_contact.mail_recipients', $config['mail_recipients']);
         $container->setParameter('neutron_contact.translation_domain', $config['translation_domain']);
     }
     
     protected function loadContactConfigurations(array $config, ContainerBuilder $container)
     {
-        $container->setParameter('neutron_contact.contact_class', $config['contact_class']);
-        $container->setAlias('neutron_contact.contact_manager', $config['contact_manager']);
-        $container->setAlias('neutron_contact.controller.backend.contact', $config['contact_controller_backend']);
-        $container->setAlias('neutron_contact.controller.frontend.contact', $config['contact_controller_frontend']);
+        $container->setParameter('neutron_contact.contact_class', $config['class']);
+        $container->setAlias('neutron_contact.contact_manager', $config['manager']);
+        $container->setAlias('neutron_contact.controller.backend.contact', $config['controller_backend']);
+        $container->setAlias('neutron_contact.controller.frontend.contact', $config['controller_frontend']);
         
         $container->setAlias('neutron_contact.form.handler.contact', $config['form']['handler']);
         $container->setParameter('neutron_contact.form.type.contact', $config['form']['type']);
         $container->setParameter('neutron_contact.form.name.contact', $config['form']['name']);
         
-        $container->setParameter('neutron_contact.contact_templates', $config['contact_templates']);
+        $container->setParameter('neutron_contact.contact_templates', $config['templates']);
         
     }
     
     protected function loadContactFormConfigurations(array $config, ContainerBuilder $container)
     {
-        $container->setParameter('neutron_contact.contact_form_class', $config['contact_form_class']);
-        $container->setAlias('neutron_contact.contact_form_manager', $config['contact_form_manager']);
-        $container->setAlias('neutron_contact.controller.backend.contact_form', $config['contact_form_controller_backend']);
+        $container->setParameter('neutron_contact.contact_form_class', $config['class']);
+        $container->setAlias('neutron_contact.contact_form_manager', $config['manager']);
+        $container->setAlias('neutron_contact.controller.backend.contact_form', $config['controller_backend']);
        
-        $container->setAlias('neutron_contact.form.handler.contact_form', $config['contact_form']['handler']);
-        $container->setParameter('neutron_contact.form.type.contact_form', $config['contact_form']['type']);
-        $container->setParameter('neutron_contact.form.name.contact_form', $config['contact_form']['name']);
+        $container->setAlias('neutron_contact.form.handler.contact_form', $config['form']['handler']);
+        $container->setParameter('neutron_contact.form.type.contact_form', $config['form']['type']);
+        $container->setParameter('neutron_contact.form.name.contact_form', $config['form']['name']);
         
-        $container->setParameter('neutron_contact.contact_form_templates', $config['contact_form_templates']);
+        $container->setParameter('neutron_contact.contact_form_templates', $config['templates']);
+        
+    }
+    
+    protected function loadContactInfoConfigurations(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('neutron_contact.contact_info_class', $config['class']);
+        $container->setAlias('neutron_contact.contact_info_manager', $config['manager']);
+        $container->setAlias('neutron_contact.controller.backend.contact_info', $config['controller_backend']);
+       
+        $container->setAlias('neutron_contact.form.handler.contact_info', $config['form']['handler']);
+        $container->setParameter('neutron_contact.form.type.contact_info', $config['form']['type']);
+        $container->setParameter('neutron_contact.form.name.contact_info', $config['form']['name']);
+        
+        $container->setParameter('neutron_contact.contact_info_templates', $config['templates']);
         
     }
 }

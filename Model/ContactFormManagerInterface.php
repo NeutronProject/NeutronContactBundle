@@ -1,8 +1,8 @@
 <?php
 namespace Neutron\Plugin\ContactBundle\Model;
 
-interface ContactFormInterface
+interface ContactFormManagerInterface
 {
-
+    public function getQueryBuilderForContactFormManagementDataGrid();
 }
 
