@@ -45,8 +45,7 @@ class ContactFormManagement
             )
             ->setAutoWidth(true)
             ->setColNames(array(
-                $this->translator->trans('grid.contact_form_management.title',  array(), $this->translationDomain),
-                $this->translator->trans('grid.contact_form_management.slug',  array(), $this->translationDomain),
+                $this->translator->trans('grid.contact_form_management.name',  array(), $this->translationDomain),
                 $this->translator->trans('grid.contact_form_management.enabled',  array(), $this->translationDomain),
             ))
             ->setColModel(array(

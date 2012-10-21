@@ -33,30 +33,32 @@ class AbstractContactForm implements ContactFormInterface
     /**
      * @var string 
      *
+     * 
      * @ORM\Column(type="string", name="name", length=255, nullable=true, unique=false)
      */
     protected $name;
     
     /**
      * @var string 
-     *
-     * @ORM\Column(type="string", name="column_name", length=255, nullable=true, unique=false)
+     * 
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string", name="mail_subject", length=255, nullable=true, unique=false)
      */
     protected $mailSubject;
     
     /**
      * @var string 
-     *
+     * 
      * @ORM\Column(type="string", name="mail_template", length=255, nullable=true, unique=false)
      */
     protected $mailTemplate;
     
     /**
-     * @var string 
+     * @var array 
      *
-     * @ORM\Column(type="text", name="recipients", nullable=true)
+     * @ORM\Column(type="array", name="recipients")
      */
-    protected $recipients;
+    private $recipients;
     
     /**
      * @var string 
@@ -71,6 +73,13 @@ class AbstractContactForm implements ContactFormInterface
      * @ORM\Column(type="boolean", name="enabled")
      */
     protected $enabled = false;
+    
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    protected $locale;
     
     public function getId ()
     {
@@ -112,7 +121,7 @@ class AbstractContactForm implements ContactFormInterface
         return $this->recipients;
     }
 
-	public function setRecipients ($recipients)
+	public function setRecipients (array $recipients)
     {
         $this->recipients = $recipients;
     }
@@ -135,6 +144,11 @@ class AbstractContactForm implements ContactFormInterface
 	public function setEnabled ($enabled)
     {
         $this->enabled = $enabled;
+    }
+    
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
 }

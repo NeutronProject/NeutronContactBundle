@@ -7,7 +7,7 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Neutron\Plugin\ContactBundle\Form\Type;
+namespace Neutron\Plugin\ContactBundle\Form\Backend\Type;
 
 use Neutron\AdminBundle\Acl\AclManagerInterface;
 
@@ -36,7 +36,7 @@ class ContactFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('content', 'neutron_contact_form_general');      
+        $builder->add('general', 'neutron_backend_contact_form_general');      
     }
     
     /**
@@ -57,6 +57,6 @@ class ContactFormType extends AbstractType
      */
     public function getName()
     {
-        return 'neutron_contact_form';
+        return 'neutron_backend_contact_form';
     }
 }

@@ -1,6 +1,10 @@
 <?php
 namespace Neutron\Plugin\ContactBundle\Controller\Backend;
 
+use Neutron\SeoBundle\Model\SeoAwareInterface;
+
+use Neutron\MvcBundle\Model\Category\CategoryInterface;
+
 use Neutron\SeoBundle\Model\SeoInterface;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

@@ -3,13 +3,9 @@ namespace Neutron\Plugin\ContactBundle\Controller\Backend;
 
 use Neutron\Plugin\ContactBundle\ContactPlugin;
 
-use Neutron\SeoBundle\Model\SeoAwareInterface;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use Neutron\SeoBundle\Model\SeoInterface;
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +19,7 @@ class ContactFormController extends ContainerAware
             ->get($this->container->getParameter('neutron_contact.datagrid.contact_form_management'));
     
         $template = $this->container->get('templating')->render(
-            'ContactBundle:Backend\ContactForm:index.html.twig', array(
+            'NeutronContactBundle:Backend\ContactForm:index.html.twig', array(
                 'datagrid' => $datagrid,
                 'translationDomain' => 
                     $this->container->getParameter('neutron_contact.translation_domain')
@@ -65,7 +61,7 @@ class ContactFormController extends ContainerAware
         $entity = $this->getEntity($id);
     
         if ($this->container->get('request')->getMethod() == 'POST'){
-            $this->container->get('neutron_contact.contact_manager')
+            $this->container->get('neutron_contact.contact_form_manager')
                 ->delete($entity, true);
             $redirectUrl = $this->container->get('router')
                 ->generate('neutron_contact.backend.contact_form');
@@ -94,7 +90,7 @@ class ContactFormController extends ContainerAware
     protected function getEntity($id)
     {
 
-        $manager = $this->container->get('neutron_contact.contact_manager');
+        $manager = $this->container->get('neutron_contact.contact_form_manager');
         
         if ($id){
             $entity = $manager->findOneBy(array('id' => $id));
@@ -107,17 +103,5 @@ class ContactFormController extends ContainerAware
         }
         
         return $entity;
-    }
-    
-    protected function getSeo(SeoAwareInterface $entity)
-    {
-    
-        if(!$entity->getSeo() instanceof SeoInterface){
-            $manager = $this->container->get('neutron_seo.manager');
-            $seo = $manager->createSeo();
-            $entity->setSeo($seo);
-        }
-    
-        return $entity->getSeo();
     }
 }

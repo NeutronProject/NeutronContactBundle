@@ -7,7 +7,9 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Neutron\Plugin\ContactBundle\Form\Type\Contact;
+namespace Neutron\Plugin\ContactBundle\Form\Backend\Type\Contact;
+
+use Neutron\Plugin\ContactBundle\Model\ContactFormManagerInterface;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -30,6 +32,8 @@ use Symfony\Component\Form\AbstractType;
 class ContentType extends AbstractType
 {
     
+    protected $contactFormManager;
+    
     protected $contactClass;
     
     protected $contactFormClass;
@@ -39,6 +43,11 @@ class ContentType extends AbstractType
     protected $allowedRoles = array('ROLE_SUPER_ADMIN');
     
     protected $translationDomain;
+    
+    public function setContactFormManager(ContactFormManagerInterface $contactFormManager)
+    {
+        $this->contactFormManager = $contactFormManager;
+    }
     
     public function setContactClass($contactClass)
     {
@@ -55,7 +64,7 @@ class ContentType extends AbstractType
         $this->templates = $templates;
     }
     
-    protected function setTranslationDomain($translationDomain)
+    public function setTranslationDomain($translationDomain)
     {
         $this->translationDomain = $translationDomain;
     }
@@ -85,25 +94,23 @@ class ContentType extends AbstractType
                     'readOnly' => false,
                 ),
             ))
-            ->add('name', 'choice', array(
+            ->add('template', 'choice', array(
                 'choices' => $this->templates,
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => array('class' => 'uniform'),
-                'label' => 'Label',
+                'label' => 'form.template',
                 'empty_value' => 'form.empty_value',
                 'translation_domain' => $this->translationDomain
             ))
             ->add('contactForm', 'entity', array(
+                'multiple' => false,
+                'attr' => array('class' => 'uniform'),
+                'label' => 'form.contactForm',
+                'empty_value' => 'form.empty_value',
                 'class' => $this->contactFormClass,
-                'property' => 'f.name',
-                'query_builder' => function(EntityRepository $er) {
-                return $er->createQueryBuilder('f')
-                    ->select('f.name')
-                    ->where('f.enabled = ?1')
-                    ->orderBy('f.name', 'ASC')
-                    ->setParameters(array(1 => true));
-                },
+                'property' => 'name',
+                'query_builder' => $this->contactFormManager->getQueryBuilderForContactFormChoices(),
                 'translation_domain' => $this->translationDomain
             ))
         ;
@@ -130,6 +137,6 @@ class ContentType extends AbstractType
      */
     public function getName()
     {
-        return 'neutron_contact_content';
+        return 'neutron_backend_contact_content';
     }
 }

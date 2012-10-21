@@ -11,4 +11,9 @@ class ContactFormManager extends AbstractManager implements ContactFormManagerIn
     {
         return $this->repository->getQueryBuilderForContactFormManagementDataGrid();
     }
+    
+    public function getQueryBuilderForContactFormChoices()
+    {
+        return $this->repository->getQueryBuilderForContactFormChoices();
+    }
 }

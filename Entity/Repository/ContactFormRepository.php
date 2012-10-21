@@ -15,6 +15,19 @@ class ContactFormRepository extends TranslationRepository
 {
     public function getQueryBuilderForContactFormManagementDataGrid()
     {
-        return $this->createQueryBuilder('f');
+        $qb = $this->createQueryBuilder('f');
+        $qb->select('f.id, f.name, f.enabled');
+        return $qb;
+    }
+    
+    public function getQueryBuilderForContactFormChoices()
+    {
+        $qb = $this->createQueryBuilder('f');
+        $qb
+            ->where('f.enabled = ?1')
+            ->orderBy('f.name', 'ASC')
+            ->setParameters(array(1 => true))
+        ;
+        return $qb;
     }
 }

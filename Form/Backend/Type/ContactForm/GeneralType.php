@@ -7,7 +7,7 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Neutron\Plugin\ContactBundle\Form\Type\ContactForm;
+namespace Neutron\Plugin\ContactBundle\Form\Backend\Type\ContactForm;
 
 use Symfony\Component\Form\FormView;
 
@@ -39,7 +39,7 @@ class GeneralType extends AbstractType
     protected $translationDomain;
     
     public function setContactFormClass($contactFormClass)
-    {
+    {   
         $this->contactFormClass = $contactFormClass;
     }
     
@@ -64,7 +64,7 @@ class GeneralType extends AbstractType
         $this->formChoices = $formChoices;
     }
     
-    protected function setTranslationDomain($translationDomain)
+    public function setTranslationDomain($translationDomain)
     {
         $this->translationDomain = $translationDomain;
     }
@@ -89,12 +89,12 @@ class GeneralType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'attr' => array('class' => 'uniform'),
-                'label' => 'Label',
+                'label' => 'form.mailTemplate',
                 'empty_value' => 'form.empty_value',
                 'translation_domain' => $this->translationDomain
             ))
-            ->add('recipients', 'neutron_select', array(
-                'label' => 'form.roles',
+            ->add('recipients', 'neutron_select_choice', array(
+                'label' => 'form.recipients',
                 'multiple' => true,
                 'choices' => $this->recipients,
                 'configs' => array('filter' => true),
@@ -141,6 +141,6 @@ class GeneralType extends AbstractType
      */
     public function getName()
     {
-        return 'neutron_contact_form_general';
+        return 'neutron_backend_contact_form_general';
     }
 }

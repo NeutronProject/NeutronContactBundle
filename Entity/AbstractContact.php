@@ -43,6 +43,7 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
     /**
      * @var string 
      *
+     * @Gedmo\Translatable
      * @ORM\Column(type="string", name="title", length=255, nullable=true, unique=false)
      */
     protected $title;
@@ -50,6 +51,7 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
     /**
      * @var string 
      *
+     * @Gedmo\Translatable
      * @ORM\Column(type="text", name="content", nullable=true)
      */
     protected $content;
@@ -60,14 +62,12 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
      * @ORM\Column(type="string", name="template", length=255, nullable=true, unique=false)
      */
     protected $template;
-
+    
     /**
-     * @ORM\ManyToMany(targetEntity="Neutron\Plugin\ContactBundle\Model\ContactFormInterface", cascade={"persist"})
-     * @ORM\JoinTable(
-     *   inverseJoinColumns={@ORM\JoinColumn(unique=true,  onDelete="CASCADE")}
-     * )
+     * @ORM\ManyToOne(targetEntity="Neutron\Plugin\ContactBundle\Model\ContactFormInterface", fetch="EAGER")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $contactForm;
+    protected $contactForm;
     
     /**
      * @Gedmo\Locale
@@ -83,10 +83,11 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
     protected $category;
     
     /**
-     * @ORM\OneToOne(targetEntity="Neutron\SeoBundle\Entity\Seo", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="Neutron\SeoBundle\Entity\Seo", cascade={"all"}, orphanRemoval=true, fetch="EAGER")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $seo;
+  
 
     public function getId()
     {
@@ -128,7 +129,7 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
         return $this->contactForm;
     }
 
-    public function setContactForm(ContactFormInterface $contactForm)
+    public function setContactForm(ContactFormInterface $contactForm = null)
     {
         $this->contactForm = $contactForm;
     }
@@ -153,6 +154,11 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
     public function getSeo()
     {
         return $this->seo;
+    }
+    
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
 }
