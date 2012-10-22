@@ -31,8 +31,6 @@ class ContactFormController extends ContainerAware
     
     public function updateAction($id)
     {   
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')
-            ->get(ContactPlugin::IDENTIFIER);
         $form = $this->container->get('neutron_contact.form.backend.contact_form');
         $handler = $this->container->get('neutron_contact.form.backend.handler.contact_form');
         $form->setData($this->getData($id));
@@ -44,7 +42,6 @@ class ContactFormController extends ContainerAware
         $template = $this->container->get('templating')->render(
             'NeutronContactBundle:Backend\ContactForm:update.html.twig', array(
                 'form' => $form->createView(),
-                'plugin' => $plugin,
                 'translationDomain' => 
                     $this->container->getParameter('neutron_contact.translation_domain')
             )
@@ -54,10 +51,7 @@ class ContactFormController extends ContainerAware
     }
     
     public function deleteAction($id)
-    {
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')
-            ->get(ContactPlugin::IDENTIFIER);
-        
+    {      
         $entity = $this->getEntity($id);
     
         if ($this->container->get('request')->getMethod() == 'POST'){
@@ -71,7 +65,6 @@ class ContactFormController extends ContainerAware
         $template = $this->container->get('templating')
             ->render('NeutronContactBundle:Backend\ContactForm:delete.html.twig', array(
                 'entity' => $entity,
-                'plugin' => $plugin,
                 'translationDomain' =>
                     $this->container->getParameter('neutron_contact.translation_domain')
             )
