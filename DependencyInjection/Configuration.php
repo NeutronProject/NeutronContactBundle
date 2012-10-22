@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
         $this->addGeneralConfigurations($rootNode);
         $this->addContactConfigurations($rootNode);
         $this->addContactFormConfigurations($rootNode);
-        //$this->addContactInfoConfigurations($rootNode);
+        $this->addContactInfoConfigurations($rootNode);
 
         return $treeBuilder;
     }
@@ -137,21 +137,14 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('controller_backend')->defaultValue('neutron_contact.controller.backend.contact_info.default')->end()
                             ->scalarNode('manager')->defaultValue('neutron_contact.doctrine.contact_info_manager.default')->end()
-                            ->arrayNode('form')
+                            ->scalarNode('datagrid')->defaultValue('neutron_contact_info_management')->end()
+                            ->arrayNode('form_backend')
                             ->addDefaultsIfNotSet()
                                 ->children()
                                     ->scalarNode('type')->defaultValue('neutron_backend_contact_info')->end()
                                     ->scalarNode('handler')->defaultValue('neutron_contact.form.backend.handler.contact_info.default')->end()
                                     ->scalarNode('name')->defaultValue('neutron_backend_contact_info')->end()
                                 ->end()
-                            ->end()
-                            ->arrayNode('templates')
-                                ->useAttributeAsKey('name')
-                                    ->prototype('scalar')
-                                ->end() 
-                                ->cannotBeOverwritten()
-                                ->isRequired()
-                                ->cannotBeEmpty()
                             ->end()
                         ->end()
                     ->end()

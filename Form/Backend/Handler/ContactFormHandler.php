@@ -1,8 +1,6 @@
 <?php
 namespace Neutron\Plugin\ContactBundle\Form\Backend\Handler;
 
-use Neutron\Plugin\ContactBundle\ContactPlugin;
-
 use Neutron\ComponentBundle\Form\Handler\AbstractFormHandler;
 
 class ContactFormHandler extends AbstractFormHandler

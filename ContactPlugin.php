@@ -54,6 +54,12 @@ class ContactPlugin
                 'route'     => 'neutron_contact.backend.contact_form',  
                 'displayed' => true  
            ))
+            ->addBackendPage(array(
+                'name'      => 'plugin.contact.contact_info',    
+                'label'     => 'plugin.contact.contact_info_management.label',    
+                'route'     => 'neutron_contact.backend.contact_info',  
+                'displayed' => true  
+           ))
             ->setTreeOptions(array(
                 'children_strategy' => 'none',
             ))

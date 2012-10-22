@@ -26,7 +26,7 @@ class NeutronContactExtension extends Extension
         $loader->load('services.xml');
         //var_dump($config); die;
         
-        foreach (array('services', 'contact', 'contact_form') as $basename) {
+        foreach (array('services', 'contact', 'contact_form', 'contact_info') as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
         
@@ -39,6 +39,7 @@ class NeutronContactExtension extends Extension
         $this->loadGeneralConfigurations($config, $container);
         $this->loadContactConfigurations($config['contact'], $container);
         $this->loadContactFormConfigurations($config['contact_form'], $container);
+        $this->loadContactInfoConfigurations($config['contact_info'], $container);
         
     }
     
@@ -88,11 +89,10 @@ class NeutronContactExtension extends Extension
         $container->setAlias('neutron_contact.contact_info_manager', $config['manager']);
         $container->setAlias('neutron_contact.controller.backend.contact_info', $config['controller_backend']);
        
-        $container->setAlias('neutron_contact.form.backend.handler.contact_info', $config['form']['handler']);
-        $container->setParameter('neutron_contact.form.backend.type.contact_info', $config['form']['type']);
-        $container->setParameter('neutron_contact.form.backend.name.contact_info', $config['form']['name']);
+        $container->setAlias('neutron_contact.form.backend.handler.contact_info', $config['form_backend']['handler']);
+        $container->setParameter('neutron_contact.form.backend.type.contact_info', $config['form_backend']['type']);
+        $container->setParameter('neutron_contact.form.backend.name.contact_info', $config['form_backend']['name']);
         
-        $container->setParameter('neutron_contact.contact_info_templates', $config['templates']);
-        
+        $container->setParameter('neutron_contact.datagrid.contact_info_management', $config['datagrid']);
     }
 }

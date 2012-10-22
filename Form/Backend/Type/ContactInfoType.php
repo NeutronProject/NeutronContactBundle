@@ -25,7 +25,7 @@ use Symfony\Component\Form\AbstractType;
  * @author Zender <azazen09@gmail.com>
  * @since 1.0
  */
-class ContactFormType extends AbstractType
+class ContactInfoType extends AbstractType
 {
     
     /**
@@ -34,7 +34,7 @@ class ContactFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('general', 'neutron_backend_contact_form_general');      
+        $builder->add('general', 'neutron_backend_contact_info_general');      
     }
     
     /**
@@ -55,6 +55,6 @@ class ContactFormType extends AbstractType
      */
     public function getName()
     {
-        return 'neutron_backend_contact_form';
+        return 'neutron_backend_contact_info';
     }
 }
