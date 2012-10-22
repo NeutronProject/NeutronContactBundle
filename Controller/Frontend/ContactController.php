@@ -28,6 +28,14 @@ class ContactController extends ContainerAware
        
         $form = $this->container->get('form.factory')
             ->createNamed('contact', $entity->getContactForm()->getForm());
+        
+        $handler = $this->container->get('neutron_contact.form.frontend.handler.contact_form');
+        $handler->setForm($form);
+        $handler->setContactFormEntity($entity->getContactForm());
+        
+        if (null !== $handler->process()){
+            return new Response(json_encode($handler->getResult()));
+        }
 
         $template = $this->container->get('templating')
             ->render($entity->getTemplate(), array(
@@ -38,18 +46,5 @@ class ContactController extends ContainerAware
     
         return  new Response($template);
     }
-    
-    public function contactFormHandleAction($formType)
-    {
-        $form = $this->container->get('form.factory')
-            ->createNamed('contact', $formType);
-        
-        $handler = $this->container->get('neutron_contact.form.frontend.handler.contact_form');
-        $handler->setForm($form);
-        
-        if (null !== $handler->process()){
-            return new Response(json_encode($handler->getResult()));
-        }
-    }
-  
+
 }

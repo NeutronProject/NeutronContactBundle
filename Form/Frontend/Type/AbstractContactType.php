@@ -83,7 +83,8 @@ abstract class AbstractContactType extends AbstractType
                'translation_domain' => $this->translationDomain,
                'configs' => array('theme' => 'clean'),
            ))
-       ;
+        ;
+       
     }
     
     /**

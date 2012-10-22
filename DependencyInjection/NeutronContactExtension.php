@@ -46,6 +46,7 @@ class NeutronContactExtension extends Extension
     {
         $container->setParameter('neutron_contact.mail_recipients', $config['mail_recipients']);
         $container->setParameter('neutron_contact.mail_templates', $config['mail_templates']);
+        $container->setAlias('neutron_contact.mailer', $config['mailer']);
         $container->setAlias('neutron_contact.form.frontend.handler.contact_form', $config['mail_handler']);
         $container->setParameter('neutron_contact.translation_domain', $config['translation_domain']);
     }

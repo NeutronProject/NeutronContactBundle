@@ -8,6 +8,7 @@
     <parameters>
         <parameter key="neutron_contact.plugin.builder.class">Neutron\Plugin\ContactBundle\ContactPlugin</parameter>
         <parameter key="neutron_contact.form.frontend.handler.contact_form.default.class">Neutron\Plugin\ContactBundle\Form\Frontend\Handler\ContactFormHandler</parameter>
+        <parameter key="neutron_contact.mailer.default.class">Neutron\Plugin\ContactBundle\Mailer\ContactMailer</parameter>
     </parameters>
 
     <services>
@@ -26,6 +27,14 @@
         	factory-method="build"
         >
             <tag name="neutron.plugin" alias="neutron.plugin.contact"/>
+        </service>
+        
+        <service id="neutron_contact.mailer.default" 
+        	class="%neutron_contact.mailer.default.class%"
+        >
+        	<call method="setContainer">
+        		<argument type="service" id="service_container" />
+        	</call>
         </service>
         
         <service id="neutron_contact.form.frontend.handler.contact_form.default" 

@@ -52,6 +52,7 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
+                ->scalarNode('mailer')->defaultValue('neutron_contact.mailer.default')->end()
                 ->scalarNode('mail_handler')->defaultValue('neutron_contact.form.frontend.handler.contact_form.default')->end()
                 ->scalarNode('translation_domain')->defaultValue('NeutronContactBundle')->end()
             ->end()
