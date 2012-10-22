@@ -18,8 +18,7 @@ class ContactController extends ContainerAware
 {   
     public function indexAction(CategoryInterface $category)
     {   
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(ContactPlugin::IDENTIFIER);
-        $contactManager = $this->container->get($plugin->getManagerServiceId());
+        $contactManager = $this->container->get('neutron_contact.contact_manager');
         $entity = $contactManager->findOneBy(array('category' => $category));
         
         if (null === $entity){
@@ -27,14 +26,30 @@ class ContactController extends ContainerAware
         }
 
        
+        $form = $this->container->get('form.factory')
+            ->createNamed('contact', $entity->getContactForm()->getForm());
+
         $template = $this->container->get('templating')
             ->render($entity->getTemplate(), array(
-                'entity'   => $entity,     
-                'plugin' => $plugin   
+                'entity'   => $entity,   
+                'form' => $form->createView(),  
             )
         );
     
         return  new Response($template);
+    }
+    
+    public function contactFormHandleAction($formType)
+    {
+        $form = $this->container->get('form.factory')
+            ->createNamed('contact', $formType);
+        
+        $handler = $this->container->get('neutron_contact.form.frontend.handler.contact_form');
+        $handler->setForm($form);
+        
+        if (null !== $handler->process()){
+            return new Response(json_encode($handler->getResult()));
+        }
     }
   
 }

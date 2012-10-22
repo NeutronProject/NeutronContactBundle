@@ -9,6 +9,8 @@
  */
 namespace Neutron\Plugin\ContactBundle\Form\Frontend\Type;
 
+use Neutron\Bundle\FormBundle\Validator\Constraint\Recaptcha;
+
 use Symfony\Component\Validator\Constraints\Email;
 
 use Symfony\Component\Validator\Constraints\MaxLength;
@@ -36,7 +38,12 @@ use Symfony\Component\Form\AbstractType;
 abstract class AbstractContactType extends AbstractType
 {
     
-    protected $translationDomain;
+    protected $translationDomain = 'messages';
+    
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->translationDomain = $translationDomain;
+    }
     
     /**
      * (non-PHPdoc)
@@ -54,29 +61,27 @@ abstract class AbstractContactType extends AbstractType
                ),
                'translation_domain' => $this->translationDomain
            ))
-           ->add('email', 'email', array(
+           ->add('email', 'text', array(
                'label' => 'form.email',
                'constraints' => array(
+                   new NotBlank(array('message' => 'email.blank')),
                    new Email(array('message' => 'email.invalid')),
                    new MaxLength(array('message' => 'name.max', 'limit' => 255))
                ),
                'translation_domain' => $this->translationDomain
            ))
            ->add('content', 'textarea', array(
-               'label' => 'form.email',
+               'label' => 'form.content',
                'constraints' => array(
                    new NotBlank(array('message' => 'content.blank')),
                    new MinLength(array('message' => 'content.min', 'limit' => 2)),
                ),
-               'translation_domain' => $this->translationDomain,
-               'attr' => array(
-                   'rows' => 10
-               ), 
+               'translation_domain' => $this->translationDomain,       
            ))
            ->add('recaptcha', 'neutron_recaptcha', array(
                'label' => 'form.recaptcha',
                'translation_domain' => $this->translationDomain,
-               'configs' => array(),
+               'configs' => array('theme' => 'clean'),
            ))
        ;
     }
@@ -87,13 +92,8 @@ abstract class AbstractContactType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => null,
-            'validation_groups' => function(FormInterface $form){
-                return 'default';
-            },
+        $resolver->setDefaults(array(       
             'csrf_protection' => false,
-            'cascade_validation' => true,
         ));
     }
     

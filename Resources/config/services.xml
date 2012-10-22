@@ -7,6 +7,7 @@
     
     <parameters>
         <parameter key="neutron_contact.plugin.builder.class">Neutron\Plugin\ContactBundle\ContactPlugin</parameter>
+        <parameter key="neutron_contact.form.frontend.handler.contact_form.default.class">Neutron\Plugin\ContactBundle\Form\Frontend\Handler\ContactFormHandler</parameter>
     </parameters>
 
     <services>
@@ -26,6 +27,19 @@
         >
             <tag name="neutron.plugin" alias="neutron.plugin.contact"/>
         </service>
+        
+        <service id="neutron_contact.form.frontend.handler.contact_form.default" 
+        	class="%neutron_contact.form.frontend.handler.contact_form.default.class%"
+        >
+        	<call method="setContainer">
+        		<argument type="service" id="service_container" />
+        	</call>
+
+        	<call method="setTranslationDomain">
+        		<argument>%neutron_contact.translation_domain%</argument>
+        	</call>
+        </service>
+        
     </services>
   
 </container>
