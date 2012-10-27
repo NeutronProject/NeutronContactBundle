@@ -1,7 +1,7 @@
 <?php
 namespace Neutron\Plugin\ContactBundle\Model;
 
-interface ContactInfoInterface 
+interface ContactBlockInterface 
 {
     public function getId ();
     

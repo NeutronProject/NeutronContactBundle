@@ -9,9 +9,10 @@
  */
 namespace Neutron\Plugin\ContactBundle\Entity;
 
-use Neutron\Plugin\ContactBundle\Model\ContactInfoReferenceInterface;
 
-use Neutron\Plugin\ContactBundle\Model\ContactInfoInterface;
+use Neutron\Plugin\ContactBundle\Model\ContactBlockInterface;
+
+use Neutron\Plugin\ContactBundle\Model\ContactBlockReferenceInterface;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\MappedSuperclass
  * 
  */
-class AbstractContactInfoReference implements ContactInfoReferenceInterface
+class AbstractContactInfoReference implements ContactBlockReferenceInterface
 {
     /**
      * @var integer 
@@ -40,13 +41,13 @@ class AbstractContactInfoReference implements ContactInfoReferenceInterface
     protected $position = 0;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Neutron\Plugin\ContactBundle\Model\WidgetContactInfoInterface", inversedBy="references")
+     * @ORM\ManyToOne(targetEntity="Neutron\Plugin\ContactBundle\Model\WidgetContactBlockInterface", inversedBy="references")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $widget;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Neutron\Plugin\ContactBundle\Model\ContactInfoInterface",  fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Neutron\Plugin\ContactBundle\Model\ContactBlockInterface",  fetch="EAGER")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $inversed;
@@ -88,8 +89,8 @@ class AbstractContactInfoReference implements ContactInfoReferenceInterface
     
     public function setInversed ($inversed)
     {
-        if (!$inversed instanceof ContactInfoInterface){
-            throw new \InvalidArgumentException('Reference must be instance of ContactInfoInterface');
+        if (!$inversed instanceof ContactBlockInterface){
+            throw new \InvalidArgumentException('Reference must be instance of ContactBlockInterface');
         }
     
         $this->inversed = $inversed;

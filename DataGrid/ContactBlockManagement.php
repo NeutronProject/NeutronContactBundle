@@ -1,7 +1,7 @@
 <?php
 namespace Neutron\Plugin\ContactBundle\DataGrid;
 
-use Neutron\Plugin\ContactBundle\Model\ContactInfoManagerInterface;
+use Neutron\Plugin\ContactBundle\Model\ContactBlockManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
@@ -9,10 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
 use Neutron\Bundle\DataGridBundle\DataGrid\FactoryInterface;
 
-class ContactInfoManagement
+class ContactBlockManagementDataGrid
 {
 
-    const IDENTIFIER = 'neutron_contact_info_management';
+    const IDENTIFIER = 'neutron_contact_block_management';
     
     protected $factory;
     
@@ -26,7 +26,7 @@ class ContactInfoManagement
    
 
     public function __construct (FactoryInterface $factory, Translator $translator, Router $router, 
-             ContactInfoManagerInterface $manager, $translationDomain)
+             ContactBlockManagerInterface $manager, $translationDomain)
     {
         $this->factory = $factory;
         $this->translator = $translator;
@@ -41,35 +41,35 @@ class ContactInfoManagement
         $dataGrid = $this->factory->createDataGrid(self::IDENTIFIER);
         $dataGrid
             ->setCaption(
-                $this->translator->trans('grid.contact_info_management.title',  array(), $this->translationDomain)
+                $this->translator->trans('grid.contact_block_management.title',  array(), $this->translationDomain)
             )
             ->setAutoWidth(true)
             ->setColNames(array(
-                $this->translator->trans('grid.contact_info_management.title',  array(), $this->translationDomain),
-                $this->translator->trans('grid.contact_info_management.phone',  array(), $this->translationDomain),
-                $this->translator->trans('grid.contact_info_management.email',  array(), $this->translationDomain),
-                $this->translator->trans('grid.contact_info_management.city',  array(), $this->translationDomain),
-                $this->translator->trans('grid.contact_info_management.enabled',  array(), $this->translationDomain),
+                $this->translator->trans('grid.contact_block_management.title',  array(), $this->translationDomain),
+                $this->translator->trans('grid.contact_block_management.phone',  array(), $this->translationDomain),
+                $this->translator->trans('grid.contact_block_management.email',  array(), $this->translationDomain),
+                $this->translator->trans('grid.contact_block_management.city',  array(), $this->translationDomain),
+                $this->translator->trans('grid.contact_block_management.enabled',  array(), $this->translationDomain),
             ))
             ->setColModel(array(
                 array(
-                    'name' => 'i.title', 'index' => 'i.title', 'width' => 200, 
+                    'name' => 'b.title', 'index' => 'b.title', 'width' => 200, 
                     'align' => 'left', 'sortable' => true, 'search' => true,
                 ), 
                 array(
-                    'name' => 'i.phone', 'index' => 'i.phone', 'width' => 200, 
+                    'name' => 'b.phone', 'index' => 'b.phone', 'width' => 200, 
                     'align' => 'left', 'sortable' => true, 'search' => true,
                 ), 
                 array(
-                    'name' => 'i.email', 'index' => 'i.email', 'width' => 200, 
+                    'name' => 'b.email', 'index' => 'b.email', 'width' => 200, 
                     'align' => 'left', 'sortable' => true, 'search' => true,
                 ), 
                 array(
-                    'name' => 'i.city', 'index' => 'i.city', 'width' => 200, 
+                    'name' => 'b.city', 'index' => 'b.city', 'width' => 200, 
                     'align' => 'left', 'sortable' => true, 'search' => true,
                 ), 
                 array(
-                    'name' => 'i.enabled', 'index' => 'i.enabled', 'width' => 200, 
+                    'name' => 'b.enabled', 'index' => 'b.enabled', 'width' => 200, 
                     'align' => 'left', 'sortable' => true, 'search' => true,
                     'formatter' => 'checkbox',  'search' => true, 'stype' => 'select',
                     'searchoptions' => array('value' => array(
@@ -79,18 +79,18 @@ class ContactInfoManagement
                 ), 
 
             ))
-            ->setQueryBuilder($this->manager->getQueryBuilderForContactInfoManagementDataGrid())
-            ->setSortName('i.title')
+            ->setQueryBuilder($this->manager->getQueryBuilderForContactBlockManagementDataGrid())
+            ->setSortName('b.title')
             ->setSortOrder('asc')
             ->enablePager(true)
             ->enableViewRecords(true)
             ->enableSearchButton(true)
             ->enableAddButton(true)
-            ->setAddBtnUri($this->router->generate('neutron_contact.backend.contact_info.update', array(), true))
+            ->setAddBtnUri($this->router->generate('neutron_contact.backend.contact_block.update', array(), true))
             ->enableEditButton(true)
-            ->setEditBtnUri($this->router->generate('neutron_contact.backend.contact_info.update', array('id' => '{id}'), true))
+            ->setEditBtnUri($this->router->generate('neutron_contact.backend.contact_block.update', array('id' => '{id}'), true))
             ->enableDeleteButton(true)
-            ->setDeleteBtnUri($this->router->generate('neutron_contact.backend.contact_info.delete', array('id' => '{id}'), true))
+            ->setDeleteBtnUri($this->router->generate('neutron_contact.backend.contact_block.delete', array('id' => '{id}'), true))
         ;
 
         return $dataGrid;

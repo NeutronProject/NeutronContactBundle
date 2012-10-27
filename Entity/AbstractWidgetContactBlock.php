@@ -11,9 +11,9 @@ namespace Neutron\Plugin\ContactBundle\Entity;
 
 use Neutron\Bundle\FormBundle\Model\MultiSelectSortableReferenceInterface;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Neutron\Plugin\ContactBundle\Model\WidgetContactBlockInterface;
 
-use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\MappedSuperclass
  * 
  */
-class AbstractWidgetContactInfo implements WidgetContactInfoInterface
+class AbstractWidgetContactBlock implements WidgetContactBlockInterface
 {
     /**
      * @var integer 
@@ -50,7 +50,7 @@ class AbstractWidgetContactInfo implements WidgetContactInfoInterface
     protected $template;
     
     /**
-     * @ORM\OneToMany(targetEntity="Neutron\Plugin\ContactBundle\Model\ContactInfoReferenceInterface", mappedBy="widget", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Neutron\Plugin\ContactBundle\Model\ContactBlockReferenceInterface", mappedBy="widget", cascade={"persist", "remove"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
     protected $references;

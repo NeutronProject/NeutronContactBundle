@@ -9,7 +9,8 @@
  */
 namespace Neutron\Plugin\ContactBundle\Entity;
 
-use Neutron\Plugin\ContactBundle\Model\ContactInfoInterface;
+
+use Neutron\Plugin\ContactBundle\Model\ContactBlockInterface;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\MappedSuperclass
  * 
  */
-class AbstractContactInfo implements ContactInfoInterface 
+class AbstractContactBlock implements ContactBlockInterface
 {
     /**
      * @var integer 
