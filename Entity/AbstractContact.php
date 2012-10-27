@@ -9,6 +9,10 @@
  */
 namespace Neutron\Plugin\ContactBundle\Entity;
 
+use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoAwareInterface;
+
+use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoInterface;
+
 use Neutron\SeoBundle\Model\SeoAwareInterface;
 
 use Neutron\MvcBundle\Model\CategoryAwareInterface;
@@ -29,7 +33,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\MappedSuperclass
  * 
  */
-class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAwareInterface
+class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAwareInterface, WidgetContactInfoAwareInterface
 {
     /**
      * @var integer 
@@ -68,6 +72,11 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     protected $contactForm;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Neutron\Plugin\ContactBundle\Model\WidgetContactInfoInterface", cascade={"persist", "remove", "merge"}, orphanRemoval=true, fetch="EAGER")
+     */
+    protected $widgetContactInfo;
     
     /**
      * @Gedmo\Locale
@@ -132,6 +141,16 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
     public function setContactForm(ContactFormInterface $contactForm = null)
     {
         $this->contactForm = $contactForm;
+    }
+    
+    public function setWidgetContactInfo(WidgetContactInfoInterface $widgetContactInfo)
+    {
+        $this->widgetContactInfo = $widgetContactInfo;
+    }
+    
+    public function getWidgetContactInfo()
+    {
+        return $this->widgetContactInfo;
     }
     
     public function setCategory(CategoryInterface $category)

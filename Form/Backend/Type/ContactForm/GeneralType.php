@@ -30,11 +30,13 @@ class GeneralType extends AbstractType
     
     protected $contactFormClass;
     
-    protected $mailTemplates;
+    protected $mailTemplates = array();
     
-    protected $recipients;
+    protected $recipients = array();
     
-    protected $formChoices;
+    protected $formChoices = array();
+    
+    protected $templates = array();
     
     protected $translationDomain;
     
@@ -62,6 +64,11 @@ class GeneralType extends AbstractType
     public function setFormChoices(array $formChoices)
     {
         $this->formChoices = $formChoices;
+    }
+    
+    public function setTemplates(array $templates)
+    {
+        $this->templates = $templates;
     }
     
     public function setTranslationDomain($translationDomain)
@@ -106,6 +113,15 @@ class GeneralType extends AbstractType
                 'expanded' => false,
                 'attr' => array('class' => 'uniform'),
                 'label' => 'form.form',
+                'empty_value' => 'form.empty_value',
+                'translation_domain' => $this->translationDomain
+            ))
+            ->add('template', 'choice', array(
+                'choices' => $this->templates,
+                'multiple' => false,
+                'expanded' => false,
+                'attr' => array('class' => 'uniform'),
+                'label' => 'form.template',
                 'empty_value' => 'form.empty_value',
                 'translation_domain' => $this->translationDomain
             ))

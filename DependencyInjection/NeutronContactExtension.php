@@ -38,7 +38,7 @@ class NeutronContactExtension extends Extension
         
         $this->loadGeneralConfigurations($config, $container);
         $this->loadContactConfigurations($config['contact'], $container);
-        $this->loadContactFormConfigurations($config['contact_form'], $container);
+        $this->loadWidgetContactFormConfigurations($config['widget_contact_form'], $container);
         $this->loadContactInfoConfigurations($config['contact_info'], $container);
         
     }
@@ -67,11 +67,19 @@ class NeutronContactExtension extends Extension
         
     }
     
-    protected function loadContactFormConfigurations(array $config, ContainerBuilder $container)
+    protected function loadWidgetContactFormConfigurations(array $config, ContainerBuilder $container)
     {
+        
+        if (false === $config['enable']){
+            $container->getDefinition('neutron_contact.widget.contact_form')
+                ->clearTag('neutron.widget');    
+        }
+        
+        $container->setParameter('neutron_contact.widget.contact_form.enable', $config['enable']);
         $container->setParameter('neutron_contact.contact_form_class', $config['class']);
         $container->setAlias('neutron_contact.contact_form_manager', $config['manager']);
         $container->setAlias('neutron_contact.controller.backend.contact_form', $config['controller_backend']);
+        $container->setAlias('neutron_contact.controller.frontend.contact_form', $config['controller_frontend']);
         $container->setParameter('neutron_contact.datagrid.contact_form_management', $config['datagrid']);
        
         $container->setAlias('neutron_contact.form.backend.handler.contact_form', $config['form']['handler']);
@@ -80,19 +88,25 @@ class NeutronContactExtension extends Extension
         
         
         $container->setParameter('neutron_contact.contact_form_choices', $config['form_choices']);
+        $container->setParameter('neutron_contact.contact_form_templates', $config['templates']);
         
     }
     
     protected function loadContactInfoConfigurations(array $config, ContainerBuilder $container)
     {
         $container->setParameter('neutron_contact.contact_info_class', $config['class']);
+        $container->setParameter('neutron_contact.widget_contact_info_class', $config['widget_class']);
+        $container->setParameter('neutron_contact.contact_info_reference_class', $config['reference_class']);
         $container->setAlias('neutron_contact.contact_info_manager', $config['manager']);
+        $container->setAlias('neutron_contact.widget_contact_info_manager', $config['widget_manager']);
         $container->setAlias('neutron_contact.controller.backend.contact_info', $config['controller_backend']);
+        $container->setAlias('neutron_contact.controller.frontend.widget_contact_info', $config['controller_frontend']);
        
         $container->setAlias('neutron_contact.form.backend.handler.contact_info', $config['form_backend']['handler']);
         $container->setParameter('neutron_contact.form.backend.type.contact_info', $config['form_backend']['type']);
         $container->setParameter('neutron_contact.form.backend.name.contact_info', $config['form_backend']['name']);
         
-        $container->setParameter('neutron_contact.datagrid.contact_info_management', $config['datagrid']);
+        $container->setParameter('neutron_contact.datagrid.contact_info_management', $config['datagrid_management']);
+        $container->setParameter('neutron_contact.widget_contact_info_templates', $config['widget_templates']);
     }
 }

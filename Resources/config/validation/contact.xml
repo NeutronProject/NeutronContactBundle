@@ -54,14 +54,6 @@
             </constraint>
         </property>
         
-        <property name="contactForm">
-        	<constraint name="NotBlank">
-                <option name="message">contactForm.blank</option>
-                <option name="groups">
-                    <value>default</value>
-                </option>
-            </constraint>
-        </property>
         
     </class>
 

@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
         
         $this->addGeneralConfigurations($rootNode);
         $this->addContactConfigurations($rootNode);
-        $this->addContactFormConfigurations($rootNode);
+        $this->addWidgetContactFormConfigurations($rootNode);
         $this->addContactInfoConfigurations($rootNode);
 
         return $treeBuilder;
@@ -93,15 +93,17 @@ class Configuration implements ConfigurationInterface
         ;
     }
     
-    private function addContactFormConfigurations(ArrayNodeDefinition $node)
+    private function addWidgetContactFormConfigurations(ArrayNodeDefinition $node)
     {
         $node
             ->children()
-                 ->arrayNode('contact_form')
+                 ->arrayNode('widget_contact_form')
                     ->addDefaultsIfNotSet()
                         ->children()
+                            ->booleanNode('enable')->defaultFalse()->end()
                             ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('controller_backend')->defaultValue('neutron_contact.controller.backend.contact_form.default')->end()
+                            ->scalarNode('controller_frontend')->defaultValue('neutron_contact.controller.frontend.contact_form.default')->end()
                             ->scalarNode('manager')->defaultValue('neutron_contact.doctrine.contact_form_manager.default')->end()
                             ->scalarNode('datagrid')->defaultValue('neutron_contact_form_management')->end()
                             ->arrayNode('form')
@@ -113,6 +115,14 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->arrayNode('form_choices')
+                                ->useAttributeAsKey('name')
+                                    ->prototype('scalar')
+                                ->end() 
+                                ->cannotBeOverwritten()
+                                ->isRequired()
+                                ->cannotBeEmpty()
+                            ->end()
+                            ->arrayNode('templates')
                                 ->useAttributeAsKey('name')
                                     ->prototype('scalar')
                                 ->end() 
@@ -135,9 +145,14 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                         ->children()
                             ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('widget_class')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('reference_class')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('controller_backend')->defaultValue('neutron_contact.controller.backend.contact_info.default')->end()
+                            ->scalarNode('controller_frontend')->defaultValue('neutron_contact.controller.frontend.widget_contact_info.default')->end()
                             ->scalarNode('manager')->defaultValue('neutron_contact.doctrine.contact_info_manager.default')->end()
-                            ->scalarNode('datagrid')->defaultValue('neutron_contact_info_management')->end()
+                            ->scalarNode('widget_manager')->defaultValue('neutron_contact.doctrine.widget_contact_info_manager.default')->end()
+                            ->scalarNode('datagrid_management')->defaultValue('neutron_contact_info_management')->end()
+                            ->scalarNode('datagrid_multi_select_sortable')->defaultValue('neutron_contact_info_multi_select_sortable')->end()
                             ->arrayNode('form_backend')
                             ->addDefaultsIfNotSet()
                                 ->children()
@@ -145,6 +160,14 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('handler')->defaultValue('neutron_contact.form.backend.handler.contact_info.default')->end()
                                     ->scalarNode('name')->defaultValue('neutron_backend_contact_info')->end()
                                 ->end()
+                            ->end()
+                            ->arrayNode('widget_templates')
+                                ->useAttributeAsKey('name')
+                                    ->prototype('scalar')
+                                ->end() 
+                                ->cannotBeOverwritten()
+                                ->isRequired()
+                                ->cannotBeEmpty()
                             ->end()
                         ->end()
                     ->end()

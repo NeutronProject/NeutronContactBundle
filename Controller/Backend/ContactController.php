@@ -1,6 +1,10 @@
 <?php
 namespace Neutron\Plugin\ContactBundle\Controller\Backend;
 
+use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoAwareInterface;
+
+use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoInterface;
+
 use Neutron\SeoBundle\Model\SeoAwareInterface;
 
 use Neutron\MvcBundle\Model\Category\CategoryInterface;
@@ -17,15 +21,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Neutron\Plugin\ContactBundle\ContactPlugin;
-
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 class ContactController extends ContainerAware
 {
     public function updateAction($id)
     {
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(ContactPlugin::IDENTIFIER);
         $form = $this->container->get('neutron_contact.form.backend.contact');
         $handler = $this->container->get('neutron_contact.form.backend.handler.contact');
         $form->setData($this->getData($id));
@@ -37,7 +38,6 @@ class ContactController extends ContainerAware
         $template = $this->container->get('templating')->render(
             'NeutronContactBundle:Backend\Contact:update.html.twig', array(
                 'form' => $form->createView(),
-                'plugin' => $plugin,
                 'translationDomain' => $this->container->getParameter('neutron_contact.translation_domain')
             )
         );
@@ -47,7 +47,6 @@ class ContactController extends ContainerAware
     
     public function deleteAction($id)
     {
-        $plugin = $this->container->get('neutron_mvc.plugin_provider')->get(ContactPlugin::IDENTIFIER);
         $category = $this->getCategory($id);
         $entity = $this->getEntity($category);
     
@@ -60,7 +59,6 @@ class ContactController extends ContainerAware
         $template = $this->container->get('templating')->render(
             'NeutronContactBundle:Backend\Contact:delete.html.twig', array(
                 'entity' => $entity,
-                'plugin' => $plugin,
                 'translationDomain' => $this->container->getParameter('neutron_contact.translation_domain')
             )
         );
@@ -103,13 +101,23 @@ class ContactController extends ContainerAware
     }
     
     
+    protected function getWidgetContactInfo(WidgetContactInfoAwareInterface $entity)
+    {
+    
+        if(!$entity->getWidgetContactInfo() instanceof WidgetContactInfoInterface){
+            $entity->setWidgetContactInfo(
+                $this->container->get('neutron_contact.widget_contact_info_manager')->create()
+            );
+        }
+    
+        return $entity->getWidgetContactInfo();
+    }
+    
     protected function getSeo(SeoAwareInterface $entity)
     {
     
         if(!$entity->getSeo() instanceof SeoInterface){
-            $manager = $this->container->get('neutron_seo.manager');
-            $seo = $this->container->get('neutron_seo.manager')->createSeo();
-            $entity->setSeo($seo);
+            $entity->setSeo($this->container->get('neutron_seo.manager')->createSeo());
         }
     
         return $entity->getSeo();
@@ -124,6 +132,7 @@ class ContactController extends ContainerAware
         return array(
             'general' => $category,
             'content' => $entity,
+            'widget_contact_info' => $this->getWidgetContactInfo($entity),
             'seo'     => $seo,
             'acl' => $this->container->get('neutron_admin.acl.manager')
                 ->getPermissions(ObjectIdentity::fromDomainObject($category))

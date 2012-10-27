@@ -1,19 +1,15 @@
 <?php
 /*
- * This file is part of NeutronContactBundle
+ * This file is part of NeutronContactBundleBundle
  *
  * (c) Zender <azazen09@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Neutron\Plugin\ContactBundle\Form\Backend\Type\Contact;
+namespace Neutron\Plugin\ContactBundle\Form\Backend\Type;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Neutron\Plugin\ContactBundle\Model\ContactFormManagerInterface;
-
-use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\FormView;
 
@@ -31,34 +27,26 @@ use Symfony\Component\Form\AbstractType;
  * @author Zender <azazen09@gmail.com>
  * @since 1.0
  */
-class ContentType extends AbstractType
+class WidgetContactInfoType extends AbstractType
 {
     
-    protected $contactFormManager;
-    
-    protected $contactClass;
-    
-    protected $templates;
-    
-    protected $allowedRoles = array('ROLE_SUPER_ADMIN');
+    protected $dataGrid;
     
     protected $eventSubscriber;
     
+    protected $widgetContactInfoClass;
+    
+    protected $contactInfoClass;
+    
+    protected $contactInfoReferenceClass;
+    
+    protected $templates;
+    
     protected $translationDomain;
     
-    public function setContactFormManager(ContactFormManagerInterface $contactFormManager)
+    public function setDataGrid($dataGrid)
     {
-        $this->contactFormManager = $contactFormManager;
-    }
-    
-    public function setContactClass($contactClass)
-    {
-        $this->contactClass = $contactClass;
-    }
-    
-    public function setTemplates($templates)
-    {
-        $this->templates = $templates;
+        $this->dataGrid = $dataGrid;
     }
     
     public function setEventSubscriber(EventSubscriberInterface $eventSubscriber)
@@ -66,6 +54,27 @@ class ContentType extends AbstractType
         $this->eventSubscriber = $eventSubscriber;
     }
     
+    public function setWidgetContactInfoClass($widgetContactInfoClass)
+    {
+        $this->widgetContactInfoClass = $widgetContactInfoClass;
+    }
+    
+    public function setContactInfoClass($contactInfoClass)
+    {
+        $this->contactInfoClass = $contactInfoClass;
+    }
+    
+    public function setContactInfoReferenceClass($contactInfoReferenceClass)
+    {
+        $this->contactInfoReferenceClass = $contactInfoReferenceClass;
+    }
+    
+    public function setTemplates(array $templates)
+    {
+        $this->templates = $templates;
+    }
+
+
     public function setTranslationDomain($translationDomain)
     {
         $this->translationDomain = $translationDomain;
@@ -78,23 +87,13 @@ class ContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text', array(
-                'label' => 'form.title',
-                'translation_domain' => $this->translationDomain
-            ))
-            ->add('content', 'neutron_tinymce', array(
-                'label' => 'form.content',
-                'security' => $this->allowedRoles,
-                'translation_domain' => $this->translationDomain,
-                'configs' => array(
-                    'theme' => 'advanced', //simple
-                    'skin'  => 'o2k7',
-                    'skin_variant' => 'black',
-                    //'width' => '60%',
-                    'height' => 300,
-                    'dialog_type' => 'modal',
-                    'readOnly' => false,
-                ),
+            ->add('references', 'neutron_multi_select_sortable_collection', array(
+                'grid' => $this->dataGrid,
+                'options' => array(
+                    'data_class' => $this->contactInfoReferenceClass,
+                    'inversed_class' => $this->contactInfoClass
+                )
+            
             ))
             ->add('template', 'choice', array(
                 'choices' => $this->templates,
@@ -105,21 +104,18 @@ class ContentType extends AbstractType
                 'empty_value' => 'form.empty_value',
                 'translation_domain' => $this->translationDomain
             ))
-            ->add('contactForm', 'entity', array(
-                'multiple' => false,
+            ->add('enabled', 'checkbox', array(
+                'label' => 'form.enabled', 
+                'value' => true,
+                'required' => false,
                 'attr' => array('class' => 'uniform'),
-                'label' => 'form.contactForm',
-                'empty_value' => 'form.empty_value',
-                'class' => $this->contactFormManager->getClassName(),
-                'property' => 'name',
-                'query_builder' => $this->contactFormManager->getQueryBuilderForContactFormChoices(),
                 'translation_domain' => $this->translationDomain
             ))
+        
         ;
         
         $builder->addEventSubscriber($this->eventSubscriber);
     }
-    
     
     /**
      * (non-PHPdoc)
@@ -128,7 +124,7 @@ class ContentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->contactClass,
+            'data_class' => $this->widgetContactInfoClass,
             'validation_groups' => function(FormInterface $form){
                 return 'default';
             },
@@ -141,6 +137,6 @@ class ContentType extends AbstractType
      */
     public function getName()
     {
-        return 'neutron_backend_contact_content';
+        return 'neutron_backend_widget_contact_info';
     }
 }

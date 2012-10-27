@@ -9,10 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
 use Neutron\Bundle\DataGridBundle\DataGrid\FactoryInterface;
 
-class ContactInfoManagement
+class ContactInfoMultiSelectSortableDataGrid
 {
 
-    const IDENTIFIER = 'neutron_contact_info_management';
+    const IDENTIFIER = 'neutron_contact_info_multi_select_sortable';
     
     protected $factory;
     
@@ -41,33 +41,19 @@ class ContactInfoManagement
         $dataGrid = $this->factory->createDataGrid(self::IDENTIFIER);
         $dataGrid
             ->setCaption(
-                $this->translator->trans('grid.contact_info_management.title',  array(), $this->translationDomain)
+                $this->translator->trans('grid.contact_info_multi_select_sortable.title',  array(), $this->translationDomain)
             )
             ->setAutoWidth(true)
             ->setColNames(array(
                 $this->translator->trans('grid.contact_info_management.title',  array(), $this->translationDomain),
-                $this->translator->trans('grid.contact_info_management.phone',  array(), $this->translationDomain),
-                $this->translator->trans('grid.contact_info_management.email',  array(), $this->translationDomain),
-                $this->translator->trans('grid.contact_info_management.city',  array(), $this->translationDomain),
                 $this->translator->trans('grid.contact_info_management.enabled',  array(), $this->translationDomain),
             ))
             ->setColModel(array(
                 array(
-                    'name' => 'i.title', 'index' => 'i.title', 'width' => 200, 
+                    'name' => 'i.title', 'index' => 'i.title', 'width' => 400, 
                     'align' => 'left', 'sortable' => true, 'search' => true,
                 ), 
-                array(
-                    'name' => 'i.phone', 'index' => 'i.phone', 'width' => 200, 
-                    'align' => 'left', 'sortable' => true, 'search' => true,
-                ), 
-                array(
-                    'name' => 'i.email', 'index' => 'i.email', 'width' => 200, 
-                    'align' => 'left', 'sortable' => true, 'search' => true,
-                ), 
-                array(
-                    'name' => 'i.city', 'index' => 'i.city', 'width' => 200, 
-                    'align' => 'left', 'sortable' => true, 'search' => true,
-                ), 
+                
                 array(
                     'name' => 'i.enabled', 'index' => 'i.enabled', 'width' => 200, 
                     'align' => 'left', 'sortable' => true, 'search' => true,
@@ -79,18 +65,14 @@ class ContactInfoManagement
                 ), 
 
             ))
-            ->setQueryBuilder($this->manager->getQueryBuilderForContactInfoManagementDataGrid())
+            ->setQueryBuilder($this->manager->getQueryBuilderForContactInfoMultiSelectSortableDataGrid())
             ->setSortName('i.title')
             ->setSortOrder('asc')
             ->enablePager(true)
             ->enableViewRecords(true)
             ->enableSearchButton(true)
-            ->enableAddButton(true)
-            ->setAddBtnUri($this->router->generate('neutron_contact.backend.contact_info.update', array(), true))
-            ->enableEditButton(true)
-            ->setEditBtnUri($this->router->generate('neutron_contact.backend.contact_info.update', array('id' => '{id}'), true))
-            ->enableDeleteButton(true)
-            ->setDeleteBtnUri($this->router->generate('neutron_contact.backend.contact_info.delete', array('id' => '{id}'), true))
+            ->enableMultiSelectSortable(true)
+            ->setMultiSelectSortableColumn('i.title')
         ;
 
         return $dataGrid;

@@ -16,7 +16,15 @@ class ContactInfoRepository extends TranslationRepository
     public function getQueryBuilderForContactInfoManagementDataGrid()
     {
         $qb = $this->createQueryBuilder('i');
-        $qb->select('i.id, i.name, i.phone, i.email, i.city, i.enabled');
+        $qb->select('i.id, i.title, i.phone, i.email, i.city, i.enabled');
+        
+        return $qb;
+    }
+    
+    public function getQueryBuilderForContactInfoMultiSelectSortableDataGrid()
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i.id, i.title, i.enabled');
         
         return $qb;
     }

@@ -25,22 +25,9 @@ class ContactController extends ContainerAware
             throw new NotFoundHttpException();
         }
 
-       
-        $form = $this->container->get('form.factory')
-            ->createNamed('contact', $entity->getContactForm()->getForm());
-        
-        $handler = $this->container->get('neutron_contact.form.frontend.handler.contact_form');
-        $handler->setForm($form);
-        $handler->setContactFormEntity($entity->getContactForm());
-        
-        if (null !== $handler->process()){
-            return new Response(json_encode($handler->getResult()));
-        }
-
         $template = $this->container->get('templating')
             ->render($entity->getTemplate(), array(
                 'entity'   => $entity,   
-                'form' => $form->createView(),  
             )
         );
     

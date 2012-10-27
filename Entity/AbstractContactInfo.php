@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\MappedSuperclass
  * 
  */
-class AbstractContactInfo implements ContactInfoInterface
+class AbstractContactInfo implements ContactInfoInterface 
 {
     /**
      * @var integer 
@@ -33,9 +33,10 @@ class AbstractContactInfo implements ContactInfoInterface
     /**
      * @var string 
      *
-     * @ORM\Column(type="string", name="name", length=50, nullable=false, unique=true)
+     * @Gedmo\Translatable
+     * @ORM\Column(type="string", name="title", length=255, nullable=false, unique=false)
      */
-    protected $name;
+    protected $title;
     
     /**
      * @var string 
@@ -105,14 +106,14 @@ class AbstractContactInfo implements ContactInfoInterface
         return $this->id;
     }
     
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
     }
     
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
 	public function getPhone ()

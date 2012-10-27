@@ -5,9 +5,9 @@ interface ContactInfoInterface
 {
     public function getId ();
     
-    public function setName($name);
+    public function setTitle($title);
     
-    public function getName();
+    public function getTitle();
     
     public function getPhone ();
     

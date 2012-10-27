@@ -46,6 +46,7 @@ class ContactType extends AbstractType
     {
         $builder->add('general', 'neutron_category');
         $builder->add('content', 'neutron_backend_contact_content');
+        $builder->add('widget_contact_info', 'neutron_backend_widget_contact_info');
         $builder->add('seo', 'neutron_seo');
         
         if ($this->aclManager->isAclEnabled()){

@@ -12,6 +12,7 @@
         <parameter key="neutron_contact.form.backend.type.contact.class">Neutron\Plugin\ContactBundle\Form\Backend\Type\ContactType</parameter>
         <parameter key="neutron_contact.form.backend.type.contact.content.class">Neutron\Plugin\ContactBundle\Form\Backend\Type\Contact\ContentType</parameter>
         <parameter key="neutron_contact.form.backend.handler.contact.default.class">Neutron\Plugin\ContactBundle\Form\Backend\Handler\ContactHandler</parameter>
+        <parameter key="neutron_contact.form.backend.event_subscriber.contact.content.class">Neutron\Plugin\ContactBundle\Form\Backend\EventSubscriber\Contact\ContentSubscriber</parameter>
     </parameters>
 
     <services>
@@ -66,12 +67,13 @@
             <call method="setContactClass">
             	<argument>%neutron_contact.contact_class%</argument>
             </call>
-            <call method="setContactFormClass">
-            	<argument>%neutron_contact.contact_form_class%</argument>
-            </call>
             <call method="setTemplates">
             	<argument>%neutron_contact.contact_templates%</argument>
             </call>
+            <call method="setEventSubscriber">
+            	<argument type="service" id="neutron_contact.form.backend.event_subscriber.contact.content" />
+            </call>
+            
             <call method="setTranslationDomain">
             	<argument>%neutron_contact.translation_domain%</argument>
             </call>
@@ -91,6 +93,11 @@
         	<call method="setTranslationDomain">
         		<argument>%neutron_contact.translation_domain%</argument>
         	</call>
+        </service>
+        
+        <service id="neutron_contact.form.backend.event_subscriber.contact.content" 
+        	class="%neutron_contact.form.backend.event_subscriber.contact.content.class%">
+        	<argument>%neutron_contact.widget.contact_form.enable%</argument>
         </service>
         
     </services>

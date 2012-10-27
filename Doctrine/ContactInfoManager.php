@@ -11,4 +11,9 @@ class ContactInfoManager extends AbstractManager implements ContactInfoManagerIn
     {
         return $this->repository->getQueryBuilderForContactInfoManagementDataGrid();
     }
+    
+    public function getQueryBuilderForContactInfoMultiSelectSortableDataGrid()
+    {
+        return $this->repository->getQueryBuilderForContactInfoMultiSelectSortableDataGrid();
+    }
 }

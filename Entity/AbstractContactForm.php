@@ -68,6 +68,13 @@ class AbstractContactForm implements ContactFormInterface
     protected $form;
     
     /**
+     * @var string 
+     *
+     * @ORM\Column(type="string", name="template", length=255, nullable=true, unique=false)
+     */
+    protected $template;
+    
+    /**
      * @var boolean 
      *
      * @ORM\Column(type="boolean", name="enabled")
@@ -134,6 +141,16 @@ class AbstractContactForm implements ContactFormInterface
 	public function setForm ($form)
     {
         $this->form = $form;
+    }
+    
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+    }
+    
+    public function getTemplate()
+    {
+        return $this->template;
     }
 
 	public function getEnabled ()
