@@ -39,7 +39,7 @@ class NeutronContactExtension extends Extension
         $this->loadGeneralConfigurations($config, $container);
         $this->loadContactConfigurations($config['contact'], $container);
         $this->loadWidgetContactFormConfigurations($config['widget_contact_form'], $container);
-        //$this->loadWidgetContactBlockConfigurations($config['widget_contact_block'], $container);
+
         
     }
     
@@ -92,28 +92,5 @@ class NeutronContactExtension extends Extension
         
     }
     
-    protected function loadWidgetContactBlockConfigurations(array $config, ContainerBuilder $container)
-    {
-        $container->setParameter('neutron_contact.contact_block_class', $config['block_class']);
-        $container->setParameter('neutron_contact.widget_contact_block_class', $config['widget_class']);
-        $container->setParameter('neutron_contact.contact_block_reference_class', $config['reference_class']);
-        $container->setAlias('neutron_contact.contact_block_manager', $config['block_manager']);
-        $container->setAlias('neutron_contact.widget_contact_block_manager', $config['widget_manager']);
-        $container->setAlias('neutron_contact.controller.backend.contact_block', $config['block_controller_backend']);
-        $container->setAlias('neutron_contact.controller.backend.widget_contact_block', $config['widget_controller_backend']);
-        $container->setAlias('neutron_contact.controller.frontend.widget_contact_block', $config['widget_controller_frontend']);
-       
-        $container->setAlias('neutron_contact.form.backend.handler.contact_block', $config['block_form_backend']['handler']);
-        $container->setParameter('neutron_contact.form.backend.type.contact_block', $config['block_form_backend']['type']);
-        $container->setParameter('neutron_contact.form.backend.name.contact_block', $config['block_form_backend']['name']);
-        
-        $container->setAlias('neutron_contact.form.backend.handler.widget_contact_block', $config['widget_form_backend']['handler']);
-        $container->setParameter('neutron_contact.form.backend.type.widget_contact_block', $config['widget_form_backend']['type']);
-        $container->setParameter('neutron_contact.form.backend.name.widget_contact_block', $config['widget_form_backend']['name']);
-        
-        $container->setParameter('neutron_contact.datagrid.contact_block_management', $config['datagrid_block_management']);
-        $container->setParameter('neutron_contact.datagrid.contact_block_management', $config['datagrid_widget_block_management']);
-        $container->setParameter('neutron_contact.datagrid.contact_block_management', $config['datagrid_block_multi_select_sortable']);
-        $container->setParameter('neutron_contact.widget_contact_info_templates', $config['widget_templates']);
-    }
+
 }

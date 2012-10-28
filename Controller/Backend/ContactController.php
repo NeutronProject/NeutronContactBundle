@@ -1,10 +1,6 @@
 <?php
 namespace Neutron\Plugin\ContactBundle\Controller\Backend;
 
-use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoAwareInterface;
-
-use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoInterface;
-
 use Neutron\SeoBundle\Model\SeoAwareInterface;
 
 use Neutron\MvcBundle\Model\Category\CategoryInterface;
@@ -101,18 +97,6 @@ class ContactController extends ContainerAware
     }
     
     
-    protected function getWidgetContactInfo(WidgetContactInfoAwareInterface $entity)
-    {
-    
-        if(!$entity->getWidgetContactInfo() instanceof WidgetContactInfoInterface){
-            $entity->setWidgetContactInfo(
-                $this->container->get('neutron_contact.widget_contact_info_manager')->create()
-            );
-        }
-    
-        return $entity->getWidgetContactInfo();
-    }
-    
     protected function getSeo(SeoAwareInterface $entity)
     {
     
@@ -132,7 +116,6 @@ class ContactController extends ContainerAware
         return array(
             'general' => $category,
             'content' => $entity,
-            'widget_contact_info' => $this->getWidgetContactInfo($entity),
             'seo'     => $seo,
             'acl' => $this->container->get('neutron_admin.acl.manager')
                 ->getPermissions(ObjectIdentity::fromDomainObject($category))

@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
         $this->addGeneralConfigurations($rootNode);
         $this->addContactConfigurations($rootNode);
         $this->addWidgetContactFormConfigurations($rootNode);
-        //$this->addWidgetContactBlockConfigurations($rootNode);
+
 
         return $treeBuilder;
     }
@@ -137,53 +137,6 @@ class Configuration implements ConfigurationInterface
         ;
     }
     
-    private function addWidgetContactBlockConfigurations(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                 ->arrayNode('widget_contact_block')
-                    ->addDefaultsIfNotSet()
-                        ->children()
-                            ->scalarNode('block_class')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('widget_class')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('reference_class')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('block_manager')->defaultValue('neutron_contact.doctrine.contact_block_manager.default')->end()
-                            ->scalarNode('widget_manager')->defaultValue('neutron_contact.doctrine.widget_contact_block_manager.default')->end()
-                            ->scalarNode('block_controller_backend')->defaultValue('neutron_contact.controller.backend.contact_block.default')->end()
-                            ->scalarNode('widget_controller_backend')->defaultValue('neutron_contact.controller.backend.widget_contact_block.default')->end()
-                            ->scalarNode('widget_controller_frontend')->defaultValue('neutron_contact.controller.frontend.widget_contact_block.default')->end()
-                            ->scalarNode('datagrid_block_management')->defaultValue('neutron_contact_block_management')->end()
-                            ->scalarNode('datagrid_block_multi_select_sortable')->defaultValue('neutron_contact_block_multi_select_sortable')->end()
-                            ->scalarNode('datagrid_widget_block_management')->defaultValue('neutron_contact_widget_block_management')->end()
-                            ->arrayNode('block_form_backend')
-                            ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->scalarNode('type')->defaultValue('neutron_backend_contact_block')->end()
-                                    ->scalarNode('handler')->defaultValue('neutron_contact.form.backend.handler.contact_block.default')->end()
-                                    ->scalarNode('name')->defaultValue('neutron_backend_contact_block')->end()
-                                ->end()
-                            ->end()
-                            ->arrayNode('widget_form_backend')
-                            ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->scalarNode('type')->defaultValue('neutron_backend_widget_contact_block')->end()
-                                    ->scalarNode('handler')->defaultValue('neutron_contact.form.backend.handler.widget_contact_block.default')->end()
-                                    ->scalarNode('name')->defaultValue('neutron_backend_widget_contact_block')->end()
-                                ->end()
-                            ->end()
-                            ->arrayNode('widget_templates')
-                                ->useAttributeAsKey('name')
-                                    ->prototype('scalar')
-                                ->end() 
-                                ->cannotBeOverwritten()
-                                ->isRequired()
-                                ->cannotBeEmpty()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
+
 
 }

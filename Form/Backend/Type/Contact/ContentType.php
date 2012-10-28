@@ -9,6 +9,8 @@
  */
 namespace Neutron\Plugin\ContactBundle\Form\Backend\Type\Contact;
 
+use Neutron\Widget\ContactBlockBundle\Model\WidgetContactBlockManagerInterface;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Neutron\Plugin\ContactBundle\Model\ContactFormManagerInterface;
@@ -36,6 +38,8 @@ class ContentType extends AbstractType
     
     protected $contactFormManager;
     
+    protected $widgetContactBlockManager;
+    
     protected $contactClass;
     
     protected $templates;
@@ -49,6 +53,11 @@ class ContentType extends AbstractType
     public function setContactFormManager(ContactFormManagerInterface $contactFormManager)
     {
         $this->contactFormManager = $contactFormManager;
+    }
+    
+    public function setWidgetContactBlockManager(WidgetContactBlockManagerInterface $widgetContactBlockManager)
+    {
+        $this->widgetContactBlockManager = $widgetContactBlockManager;
     }
     
     public function setContactClass($contactClass)
@@ -115,9 +124,19 @@ class ContentType extends AbstractType
                 'query_builder' => $this->contactFormManager->getQueryBuilderForContactFormChoices(),
                 'translation_domain' => $this->translationDomain
             ))
+            ->add('widgetContactBlock', 'entity', array(
+                'multiple' => false,
+                'attr' => array('class' => 'uniform'),
+                'label' => 'form.widgetContactBlock',
+                'empty_value' => 'form.empty_value',
+                'class' => $this->widgetContactBlockManager->getClassName(),
+                'property' => 'title',
+                'query_builder' => $this->widgetContactBlockManager->getQueryBuilderForFormChoices(),
+                'translation_domain' => $this->translationDomain
+            ))
         ;
         
-        $builder->addEventSubscriber($this->eventSubscriber);
+        //$builder->addEventSubscriber($this->eventSubscriber);
     }
     
     

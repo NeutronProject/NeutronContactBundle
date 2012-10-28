@@ -9,9 +9,10 @@
  */
 namespace Neutron\Plugin\ContactBundle\Entity;
 
-use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoAwareInterface;
 
-use Neutron\Plugin\ContactBundle\Model\WidgetContactInfoInterface;
+use Neutron\Widget\ContactBlockBundle\Model\WidgetContactBlockAwareInterface;
+
+use Neutron\Widget\ContactBlockBundle\Model\WidgetContactBlockInterface;
 
 use Neutron\SeoBundle\Model\SeoAwareInterface;
 
@@ -33,7 +34,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\MappedSuperclass
  * 
  */
-class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAwareInterface, WidgetContactInfoAwareInterface
+class AbstractContact implements ContactInterface, CategoryAwareInterface, 
+    SeoAwareInterface, WidgetContactBlockAwareInterface
 {
     /**
      * @var integer 
@@ -74,9 +76,11 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
     protected $contactForm;
     
     /**
-     * @ORM\OneToOne(targetEntity="Neutron\Plugin\ContactBundle\Model\WidgetContactInfoInterface", cascade={"persist", "remove", "merge"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Neutron\Widget\ContactBlockBundle\Model\WidgetContactBlockInterface", fetch="EAGER")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    protected $widgetContactInfo;
+    protected $widgetContactBlock;
+    
     
     /**
      * @Gedmo\Locale
@@ -143,14 +147,14 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface, SeoAw
         $this->contactForm = $contactForm;
     }
     
-    public function setWidgetContactInfo(WidgetContactInfoInterface $widgetContactInfo)
+    public function setWidgetContactBlock(WidgetContactBlockInterface $widgetContactBlock)
     {
-        $this->widgetContactInfo = $widgetContactInfo;
+        $this->widgetContactBlock = $widgetContactBlock;
     }
     
-    public function getWidgetContactInfo()
+    public function getWidgetContactBlock()
     {
-        return $this->widgetContactInfo;
+        return $this->widgetContactBlock;
     }
     
     public function setCategory(CategoryInterface $category)

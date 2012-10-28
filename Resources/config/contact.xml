@@ -64,6 +64,9 @@
             <call method="setContactFormManager">
             	<argument type="service" id="neutron_contact.contact_form_manager" />
             </call>
+            <call method="setWidgetContactBlockManager">
+            	<argument type="service" id="neutron_contact_block.widget_contact_block_manager" />
+            </call>
             <call method="setContactClass">
             	<argument>%neutron_contact.contact_class%</argument>
             </call>
