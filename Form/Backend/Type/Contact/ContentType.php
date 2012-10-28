@@ -9,11 +9,11 @@
  */
 namespace Neutron\Plugin\ContactBundle\Form\Backend\Type\Contact;
 
+use Neutron\Widget\ContactFormBundle\Model\ContactFormManagerInterface;
+
 use Neutron\Widget\ContactBlockBundle\Model\WidgetContactBlockManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Neutron\Plugin\ContactBundle\Model\ContactFormManagerInterface;
 
 use Doctrine\ORM\EntityRepository;
 

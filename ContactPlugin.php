@@ -48,13 +48,6 @@ class ContactPlugin
             ->setUpdateRoute('neutron_contact.backend.contact.update')
             ->setDeleteRoute('neutron_contact.backend.contact.delete')
             ->setManagerServiceId('neutron_contact.contact_manager')
-            ->addBackendPage(array(
-                'name'      => 'plugin.contact.contact_form',    
-                'label'     => 'plugin.contact.contact_form_management.label',    
-                'route'     => 'neutron_contact.backend.contact_form',  
-                'displayed' => true  
-           ))
-
             ->setTreeOptions(array(
                 'children_strategy' => 'none',
             ))

@@ -10,6 +10,8 @@
 namespace Neutron\Plugin\ContactBundle\Entity;
 
 
+use Neutron\Widget\ContactFormBundle\Model\ContactFormInterface;
+
 use Neutron\Widget\ContactBlockBundle\Model\WidgetContactBlockAwareInterface;
 
 use Neutron\Widget\ContactBlockBundle\Model\WidgetContactBlockInterface;
@@ -21,8 +23,6 @@ use Neutron\MvcBundle\Model\CategoryAwareInterface;
 use Neutron\MvcBundle\Model\Category\CategoryInterface;
 
 use Neutron\SeoBundle\Model\SeoInterface;
-
-use Neutron\Plugin\ContactBundle\Model\ContactFormInterface;
 
 use Neutron\Plugin\ContactBundle\Model\ContactInterface;
 
@@ -70,7 +70,7 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface,
     protected $template;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Neutron\Plugin\ContactBundle\Model\ContactFormInterface", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Neutron\Widget\ContactFormBundle\Model\ContactFormInterface", fetch="EAGER")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     protected $contactForm;
@@ -147,7 +147,7 @@ class AbstractContact implements ContactInterface, CategoryAwareInterface,
         $this->contactForm = $contactForm;
     }
     
-    public function setWidgetContactBlock(WidgetContactBlockInterface $widgetContactBlock)
+    public function setWidgetContactBlock(WidgetContactBlockInterface $widgetContactBlock = null)
     {
         $this->widgetContactBlock = $widgetContactBlock;
     }

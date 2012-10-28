@@ -23,11 +23,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ContentSubscriber implements EventSubscriberInterface
 {   
-    protected $isContactFormWidgetEnabled;
+    protected $widgetContactFormEnabled;
     
-    public function __construct($isContactFormWidgetEnabled)
+    protected $widgetContactBlockEnabled;
+    
+    public function __construct($widgetContactFormEnabled, $widgetContactBlockEnabled)
     {
-        $this->isContactFormWidgetEnabled = (bool) $isContactFormWidgetEnabled;
+        $this->widgetContactFormEnabled = $widgetContactFormEnabled;
+        $this->widgetContactBlockEnabled = $widgetContactBlockEnabled;
     }
     
     public function preSetData(FormEvent $event)
@@ -39,8 +42,12 @@ class ContentSubscriber implements EventSubscriberInterface
             return;
         }
         
-        if (!$this->isContactFormWidgetEnabled){
+        if (!$this->widgetContactFormEnabled){
             $form->remove('contactForm');
+        }
+        
+        if (!$this->widgetContactBlockEnabled){
+            $form->remove('widgetContactBlock');
         }
     }
     
