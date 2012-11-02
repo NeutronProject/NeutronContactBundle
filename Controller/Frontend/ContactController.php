@@ -1,11 +1,7 @@
 <?php
 namespace Neutron\Plugin\ContactBundle\Controller\Frontend;
 
-use Neutron\Plugin\ContactBundle\ContactPlugin;
-
-use Neutron\MvcBundle\Provider\PluginProvider;
-
-use Neutron\MvcBundle\Model\Category\CategoryInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -16,13 +12,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContactController extends ContainerAware
 {   
-    public function indexAction(CategoryInterface $category)
+    public function indexAction($slug)
     {   
-        $contactManager = $this->container->get('neutron_contact.contact_manager');
-        $entity = $contactManager->findOneBy(array('category' => $category));
+        $categoryManager = $this->container->get('neutron_mvc.category.manager');
+        
+        $entity = $categoryManager->findOneByCategorySlug(
+            $this->container->getParameter('neutron_contact.contact_class'), 
+            $slug,
+            $this->container->get('request')->getLocale()
+        );
         
         if (null === $entity){
             throw new NotFoundHttpException();
+        }
+        
+        if (false === $this->container->get('neutron_admin.acl.manager')->isGranted($entity->getCategory(), 'VIEW')){
+            throw new AccessDeniedException();
         }
 
         $template = $this->container->get('templating')

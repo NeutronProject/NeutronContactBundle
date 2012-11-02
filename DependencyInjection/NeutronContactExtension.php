@@ -28,7 +28,6 @@ class NeutronContactExtension extends Extension
         if ($config['enable'] === false){
             $container->getDefinition('neutron_contact.plugin')
                 ->clearTag('neutron.plugin');
-            return;
         }
         
         $this->loadGeneralConfigurations($config, $container);

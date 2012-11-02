@@ -44,7 +44,7 @@ class ContactPlugin
         $plugin
             ->setLabel($this->translator->trans('plugin.contact.label', array(), $this->translationDomain))
             ->setDescription($this->translator->trans('plugin.contact.description', array(), $this->translationDomain))
-            ->setFrontController('neutron_contact.controller.frontend.contact:indexAction')
+            ->setFrontendRoute('neutron_contact.frontend.contact')
             ->setUpdateRoute('neutron_contact.backend.contact.update')
             ->setDeleteRoute('neutron_contact.backend.contact.delete')
             ->setManagerServiceId('neutron_contact.contact_manager')
